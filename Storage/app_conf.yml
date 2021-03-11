@@ -1,0 +1,11 @@
+version: 1
+datastore:
+  user: <Insert>
+  password: <Insert>
+  hostname: <Insert>
+  port: <Insert>
+  db: <Insert>
+events:
+  hostname: <Insert>
+  port: <Insert>
+  topic: <Insert>

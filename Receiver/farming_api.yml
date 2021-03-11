@@ -1,0 +1,189 @@
+openapi: 3.0.0
+info:
+  description: This API receives reading events from farm plot trackers regarding
+               farming conditions.
+  version: "1.0.0"
+  title: Farm plot management API
+  contact:
+    email: <Insert>
+tags:
+  - name: trackers
+    description: Operations available to Farming plot Trackers
+paths:
+  /farm_plot_readings/weather:
+    post:
+      tags:
+        - trackers
+      summary: reports new weather reading
+      operationId: app.report_weather_reading
+      description: Adds a new weather reading to the system
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Weather'
+        description: Reading item to add
+    get:
+      tags:
+        - trackers
+      summary: gets new weather reading
+      operationId: app.get_weather_readings
+      description: Gets weather readings added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses:
+        '200':
+          description: Successfully returned a list of weather events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Weather'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /farm_plot_readings/soil:
+    post:
+      tags:
+        - trackers
+      summary: reports new soil condition reading
+      operationId: app.report_soil_reading
+      description: Adds a new soil condition reading to the system
+      responses:
+        '201':
+          description: item created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Soil'
+        description: Reading item to add
+    get:
+      tags:
+        - trackers
+      summary: gets new soil reading
+      operationId: app.get_soil_readings
+      description: Gets soil readings added after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2016-08-29T09:12:33.001Z
+      responses:
+        '200':
+          description: Successfully returned a list of soil events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Soil'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components:
+  schemas:
+    Weather:
+      type: object
+      required:
+        - plot_id
+        - tracker_id
+        - temperature_range
+        - relative_humidity
+        - timestamp
+      properties:
+        plot_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        tracker_id:
+          type: string
+          example: R2D2
+        temperature_range:
+          $ref: '#/components/schemas/TemperatureRange'
+        relative_humidity:
+          type: integer
+          example: 82
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    Soil:
+      type: object
+      required:
+        - plot_id
+        - tracker_id
+        - ph_level
+        - phosphorus
+        - saturation
+        - timestamp
+      properties:
+        plot_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        tracker_id:
+          type: string
+          example: R2D2
+        ph_level:
+          type: number
+          example: 7.2, scale from 1 to 10
+        phosphorus:
+          type: number
+          example: 22.5, measurements in ppm
+        saturation:
+          type: number
+          example: 25.5, measurements in percentage
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    TemperatureRange:
+      type: object
+      required:
+        - low
+        - high
+        - avg
+        - notation
+      properties:
+        low:
+          type: number
+          example: 0
+        high:
+          type: number
+          example: 90.44
+        avg:
+          type: number
+          example: 45.22
+        notation:
+          type: string
+          example: C or F

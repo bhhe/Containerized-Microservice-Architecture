@@ -1,0 +1,23 @@
+version: 1
+datastore:
+  filename: data.json
+scheduler:
+  period_sec: 5
+eventstore:
+  url: http://localhost:8090
+weather:
+  url: http://localhost:8090/farm_plot_readings/weather
+soil:
+  url: http://localhost:8090/farm_plot_readings/soil
+default_stats: {
+  "num_weather_readings": 0,
+  "max_weather_temp_avg": 0,
+  "max_weather_temp_high": 0,
+  "max_weather_temp_low": 0,
+  "max_weather_relative_humidity": 0,
+  "num_soil_readings": 0,
+  "max_soil_ph_reading": 0,
+  "max_soil_phosphorus_reading": 0,
+  "max_soil_saturation_reading": 0,
+  "last_updated": "2016-08-29T09:12:33Z"
+}

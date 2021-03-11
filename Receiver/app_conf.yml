@@ -1,0 +1,9 @@
+version: 1
+weather:
+  url: http://localhost:8090/farm_plot_readings/weather
+soil:
+  url: http://localhost:8090/farm_plot_readings/soil
+events:
+  hostname: <Insert>
+  port: <Insert>
+  topic: <Insert>

@@ -1,0 +1,154 @@
+openapi: 3.0.0
+info:
+  description: This API provides audit info
+  version: "1.0.0"
+  title: Audit API
+  contact:
+    email: <Insert>
+paths:
+  /farm_plot_readings/weather:
+    get:
+      summary: gets new weather reading
+      operationId: app.get_weather_readings
+      description: Gets weather readings from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the weather reading at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned a weather event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Weather'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /farm_plot_readings/soil:
+    get:
+      summary: gets new soil reading
+      operationId: app.get_soil_readings
+      description: Gets soil readings from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the weather reading at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned a soil event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/Soil'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components:
+  schemas:
+    Weather:
+      type: object
+      required:
+        - plot_id
+        - tracker_id
+        - temperature_range
+        - relative_humidity
+        - timestamp
+      properties:
+        plot_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        tracker_id:
+          type: string
+          example: R2D2
+        temperature_range:
+          $ref: '#/components/schemas/TemperatureRange'
+        relative_humidity:
+          type: integer
+          example: 82
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    Soil:
+      type: object
+      required:
+        - plot_id
+        - tracker_id
+        - ph_level
+        - phosphorus
+        - saturation
+        - timestamp
+      properties:
+        plot_id:
+          type: string
+          format: uuid
+          example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        tracker_id:
+          type: string
+          example: R2D2
+        ph_level:
+          type: number
+          example: 7.2, scale from 1 to 10
+        phosphorus:
+          type: number
+          example: 22.5, measurements in ppm
+        saturation:
+          type: number
+          example: 25.5, measurements in percentage
+        timestamp:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:12:33.001Z'
+    TemperatureRange:
+      type: object
+      required:
+        - low
+        - high
+        - avg
+        - notation
+      properties:
+        low:
+          type: number
+          example: 0
+        high:
+          type: number
+          example: 90.44
+        avg:
+          type: number
+          example: 45.22
+        notation:
+          type: string
+          example: C or F

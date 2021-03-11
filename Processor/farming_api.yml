@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  description: This API provides event stats
+  version: "1.0.0"
+  title: Stats API
+  contact:
+    email: <Insert Here>
+paths:
+  /stats:
+    get:
+      summary: Gets the event stats
+      operationId: app.get_stats
+      description: Gets Weather and Soil processed statistics
+      responses:
+        '200':
+          description: Sucessfully returned a list of weather events
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ReadingStats'
+        '400':
+          description: Invalid Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components:
+  schemas:
+    ReadingStats:
+      required:
+        - num_weather_readings
+        - max_weather_temp_avg
+        - max_weather_temp_high
+        - max_weather_temp_low
+        - max_weather_relative_humidity_reading
+        - num_soil_readings
+        - max_soil_ph_reading
+        - max_soil_phosphorus_reading
+        - max_soil_saturation_reading
+      properties:
+        num_weather_readings:
+          type: integer
+          example: 500000
+        max_weather_temp_avg:
+          type: number
+          example: 15.5
+        max_weather_temp_high:
+          type: number
+          example: 20.2
+        max_weather_temp_low:
+          type: number
+          example: 5.5
+        max_weather_relative_humidity_reading:
+          type: integer
+          example: 5
+        num_soil_readings:
+          type: integer
+          example: 500000
+        max_soil_ph_reading:
+          type: number
+          example: 50
+        max_soil_phosphorus_reading:
+          type: number
+          example: 60
+        max_soil_saturation_reading:
+          type: number
+          example: 70
+      type: object
