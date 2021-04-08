@@ -83,7 +83,7 @@ def get_weather_readings(start_timestamp, end_timestamp):
     start_timestamp_datetime = datetime.datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%SZ")
     end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
     print(end_timestamp_datetime)
-    readings = session.query(Weather).filter(and_(Weather.date_created >= start_timestamp_datetime, Weather.data_created < end_timestamp_datetime))
+    readings = session.query(Weather).filter(and_(Weather.date_created >= start_timestamp_datetime, Weather.date_created < end_timestamp_datetime))
     results_list = []
 
     for reading in readings:
@@ -100,7 +100,7 @@ def get_soil_readings(start_timestamp, end_timestamp):
     start_timestamp_datetime = datetime.datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%SZ")
     end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
     print(end_timestamp_datetime)
-    readings = session.query(Soil).filter(and_(Soil.date_created >= start_timestamp_datetime, Soil.data_created < end_timestamp_datetime))
+    readings = session.query(Soil).filter(and_(Soil.date_created >= start_timestamp_datetime, Soil.date_created < end_timestamp_datetime))
     results_list = []
 
     for reading in readings:
