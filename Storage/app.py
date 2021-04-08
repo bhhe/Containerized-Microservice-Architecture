@@ -89,7 +89,7 @@ def get_weather_readings(start_timestamp, end_timestamp):
     for reading in readings:
         results_list.append(reading.to_dict())
     session.close()
-    logger.info("Query for Weather readings after %s returns %d results" % (timestamp, len(results_list)))
+    logger.info("Query for Weather readings after %s returns %d results" % (start_timestamp, len(results_list)))
 
     return results_list, 200
 
@@ -106,7 +106,7 @@ def get_soil_readings(start_timestamp, end_timestamp):
     for reading in readings:
         results_list.append(reading.to_dict())
     session.close()
-    logger.info("Query for Soil readings after %s returns %d results" % (timestamp, len(results_list)))
+    logger.info("Query for Soil readings after %s returns %d results" % (start_timestamp, len(results_list)))
 
     return results_list, 200
 
