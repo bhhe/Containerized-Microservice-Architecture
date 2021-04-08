@@ -6,6 +6,7 @@ import connexion
 import yaml
 import logging
 import datetime
+import time
 import json
 import os
 from pykafka import KafkaClient
@@ -118,12 +119,19 @@ def process_messages():
     """ Process event messages """
     hostname = "%s:%d" % (app_config["events"]["hostname"],
                           app_config["events"]["port"])
-    try:
-        client = KafkaClient(hosts=hostname)
-    except Exception as ex:
-        print(ex)
-
-    topic = client.topics[str.encode(app_config["events"]["topic"])]
+    attempt = 0;
+    while attempt < app_config["kafka"]["attempts"]:
+        try:
+            print("test1")
+            client = KafkaClient(hosts=hostname)
+            topic = client.topics[str.encode(app_config["events"]["topic"])]
+            print(client)
+            print("test2")
+            break
+        except Exception as ex:
+            print(ex)
+        attempt += 1
+        time.sleep(3)
 
     # Create a consume on a consumer group, that only reads new messages
     # (uncommitted messages) when the service re-starts (i.e., it doesn't
