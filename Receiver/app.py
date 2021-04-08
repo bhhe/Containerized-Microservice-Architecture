@@ -35,7 +35,7 @@ logger = logging.getLogger('basicLogger')
 logger.info("App Conf File: %s" % app_conf_file)
 logger.info("Log Conf File: %s" % log_conf_file)
 
-def request_kafka(reading, event_type):
+def connect_kafka():
     attempt = 0
     while attempt < app_config['kafka']['attempts']:
         logger.info("Attempting to Connect to Kafka #%d" % attempt)
@@ -50,6 +50,7 @@ def request_kafka(reading, event_type):
         attempt += 1
         time.sleep(3)
 
+def request_kafka(reading, event_type):
     producer = topic.get_sync_producer()
     event_id = reading["plot_id"] + reading["tracker_id"] + reading["timestamp"]
     logger.info(f"Received event {event_type} post request with a unique id of {event_id}")
@@ -96,3 +97,4 @@ app.add_api("farming_api.yml", strict_validation=True, validate_responses=True)
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     app.run(port=8080)
+    connect_kafka()
