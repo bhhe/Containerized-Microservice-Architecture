@@ -45,7 +45,8 @@ def request_kafka(reading, event_type):
             logger.info("Successfully connected to Kafka")
             break
         except Exception as ex:
-            logger.error("Failed to Connect #d: %s" %(attempt, ex))
+            error_string = str(ex)
+            logger.error("Failed to Connect #d: %s" %(attempt, error_string))
         attempt += 1
         time.sleep(3)
 
