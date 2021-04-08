@@ -121,15 +121,14 @@ def process_messages():
                           app_config["events"]["port"])
     attempt = 0;
     while attempt < app_config["kafka"]["attempts"]:
+        logger.info("Attempt #%d to connect to KafkaClient" % attempt)
         try:
-            print("test1")
             client = KafkaClient(hosts=hostname)
             topic = client.topics[str.encode(app_config["events"]["topic"])]
-            print(client)
-            print("test2")
+            logger.info("Successfully connected to Kafka")
             break
         except Exception as ex:
-            print(ex)
+            logger.error("Failed to connect to Kafka:%s" % ex)
         attempt += 1
         time.sleep(3)
 
