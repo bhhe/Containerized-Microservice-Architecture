@@ -14,6 +14,7 @@ from threading import Thread
 from connexion import NoContent
 from logging import config
 from sqlalchemy import create_engine
+from sqlalchemy import and_
 from sqlalchemy.orm import sessionmaker
 from base import Base
 from weather import Weather
@@ -75,12 +76,15 @@ def store_reading(body, event_type):
     return NoContent, 201
 
 
-def get_weather_readings(timestamp):
+def get_weather_readings(start_timestamp, end_timestamp):
     """ Gets new weather readings after the timestamp """
     session = DB_SESSION()
-    timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
-    print(timestamp_datetime)
-    readings = session.query(Weather).filter(Weather.date_created >= timestamp_datetime)
+    start_timestamp_datetime = datetime.datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    print(end_timestamp_datetime)
+    readings = session.query(Weather).filter(
+            and_(Weather.date_created >= start_timestamp_datetime,
+                 Weather.data_created < end_timestamp_datetime))
     results_list = []
 
     for reading in readings:
@@ -91,12 +95,15 @@ def get_weather_readings(timestamp):
     return results_list, 200
 
 
-def get_soil_readings(timestamp):
+def get_soil_readings(start_timestamp, end_timestamp):
     """ Gets new soil readings after the timestamp """
     session = DB_SESSION()
-    timestamp_datetime = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
-    print(timestamp_datetime)
-    readings = session.query(Soil).filter(Soil.date_created >= timestamp_datetime)
+    start_timestamp_datetime = datetime.datetime.strptime(start_timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    end_timestamp_datetime = datetime.datetime.strptime(end_timestamp, "%Y-%m-%dT%H:%M:%SZ")
+    print(end_timestamp_datetime)
+    readings = session.query(Soil).filter(
+            and_(Soil.date_created >= start_timestamp_datetime,
+                 Soil.data_created < end_timestamp_datetime))
     results_list = []
 
     for reading in readings:
