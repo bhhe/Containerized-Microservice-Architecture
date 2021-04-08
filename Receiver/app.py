@@ -96,4 +96,3 @@ app.add_api("farming_api.yml", strict_validation=True, validate_responses=True)
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     app.run(port=8080)
-    connect_kafka()
