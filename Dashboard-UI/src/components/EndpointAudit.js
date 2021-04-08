@@ -3,11 +3,10 @@ import '../App.css';
 
 export default function EndpointAudit(props) {
     const [isLoaded, setIsLoaded] = useState(false);
+    const [index, setIndex] = useState(null);	
     const [log, setLog] = useState(null);
-    const [error, setError] = useState(null);
-    const rand_val = Math.floor(Math.random() * 100); // Get a random event from the event store
-    const [index, setIndex] = useState(null);
-    setIndex(rand_val);
+    const [error, setError] = useState(null)
+	const rand_val = Math.floor(Math.random() * 100); // Get a random event from the event store
 
 
     const getAudit = () => {
@@ -17,6 +16,7 @@ export default function EndpointAudit(props) {
 				console.log("Received Audit Results for " + props.endpoint)
                 setLog(result);
                 setIsLoaded(true);
+		setIndex(rand_val);
             },(error) =>{
                 setError(error)
                 setIsLoaded(true);
