@@ -46,6 +46,7 @@ def request_kafka(reading, event_type):
             break
         except Exception as ex:
             logger.error("Failed to Connect #d: %s" %(attempt, ex))
+        attempt += 1
         time.sleep(3)
 
     producer = topic.get_sync_producer()
