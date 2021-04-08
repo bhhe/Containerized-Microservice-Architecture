@@ -35,20 +35,19 @@ logger = logging.getLogger('basicLogger')
 logger.info("App Conf File: %s" % app_conf_file)
 logger.info("Log Conf File: %s" % log_conf_file)
 
-def connect_kafka():
-    attempt = 0
-    while attempt < app_config['kafka']['attempts']:
-        logger.info("Attempting to Connect to Kafka #%d" % attempt)
-        try:
-            client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
-            topic = client.topics[str.encode(app_config['events']['topic'])]
-            logger.info("Successfully connected to Kafka")
-            break
-        except Exception as ex:
-            error_string = str(ex)
-            logger.error("Failed to Connect #%d: %s" % (attempt, error_string))
-        attempt += 1
-        time.sleep(3)
+attempt = 0
+while attempt < app_config['kafka']['attempts']:
+    logger.info("Attempting to Connect to Kafka #%d" % attempt)
+    try:
+        client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
+        topic = client.topics[str.encode(app_config['events']['topic'])]
+        logger.info("Successfully connected to Kafka")
+        break
+    except Exception as ex:
+        error_string = str(ex)
+        logger.error("Failed to Connect #%d: %s" % (attempt, error_string))
+    attempt += 1
+    time.sleep(3)
 
 def request_kafka(reading, event_type):
     producer = topic.get_sync_producer()
