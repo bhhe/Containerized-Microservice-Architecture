@@ -118,7 +118,11 @@ def process_messages():
     """ Process event messages """
     hostname = "%s:%d" % (app_config["events"]["hostname"],
                           app_config["events"]["port"])
-    client = KafkaClient(hosts=hostname)
+    try:
+        client = KafkaClient(hosts=hostname)
+    except Exception as ex:
+        print(ex)
+
     topic = client.topics[str.encode(app_config["events"]["topic"])]
 
     # Create a consume on a consumer group, that only reads new messages
