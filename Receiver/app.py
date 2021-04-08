@@ -9,6 +9,7 @@ import logging
 import datetime
 import json
 import os
+import time
 from pykafka import KafkaClient
 from logging import config
 from connexion import NoContent
@@ -35,8 +36,18 @@ logger.info("App Conf File: %s" % app_conf_file)
 logger.info("Log Conf File: %s" % log_conf_file)
 
 def request_kafka(reading, event_type):
-    client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
-    topic = client.topics[str.encode(app_config['events']['topic'])]
+    attempt = 0
+    while attempt < app_config['kafka']['attempts']:
+        logger.info("Attempting to Connect to Kafka #%d" % attempt)
+        try:
+            client = KafkaClient(hosts=f"{app_config['events']['hostname']}:{app_config['events']['port']}")
+            topic = client.topics[str.encode(app_config['events']['topic'])]
+            logger.info("Successfully connected to Kafka")
+            break
+        except Exception as ex:
+            logger.error("Failed to Connect #d: %s" %(attempt, ex))
+        time.sleep(3)
+
     producer = topic.get_sync_producer()
     event_id = reading["plot_id"] + reading["tracker_id"] + reading["timestamp"]
     logger.info(f"Received event {event_type} post request with a unique id of {event_id}")

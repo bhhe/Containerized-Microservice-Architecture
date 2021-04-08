@@ -7,3 +7,5 @@ events:
   hostname: <Insert>
   port: <Insert>
   topic: <Insert>
+kafka:
+  attempts: 5
