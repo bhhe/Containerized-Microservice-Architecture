@@ -58,6 +58,7 @@ def populate_stats():
     current_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
     if data_json["last_updated"] > current_time:
         return
+    data_json['current_timestamp'] = current_time
     update_weather(data_json)
     update_soil(data_json)
     data_json['last_updated'] = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -83,7 +84,11 @@ def write_json(data_json):
 
 
 def update_weather(data_json):
-    weather_result = requests.get(app_config["weather"]["url"], params={"timestamp": data_json["last_updated"]})
+    weather_result = requests.get(app_config["weather"]["url"], 
+                                  params={
+                                      "start_timestamp": data_json["last_updated"],
+                                      "end_timestamp": data_json["current_timestamp"]
+                                  })
     if weather_result.status_code == 200:
         weather_list = weather_result.json()
         logger.info("Received %d from Weather" % len(weather_list))
@@ -102,7 +107,11 @@ def update_weather(data_json):
 
 
 def update_soil(data_json):
-    soil_result = requests.get(app_config["soil"]["url"], params={"timestamp": data_json["last_updated"]})
+    soil_result = requests.get(app_config["soil"]["url"],
+                               params={
+                                   "start_timestamp": data_json["last_updated"],
+                                   "end_timestamp": data_json["current_timestamp"]
+                               })
     if soil_result.status_code == 200:
         soil_list = soil_result.json()
         logger.info("Received %d from Soil" % len(soil_list))
