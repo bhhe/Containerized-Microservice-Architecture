@@ -90,7 +90,7 @@ def get_soil_readings(timestamp):
 
 
 app = connexion.FlaskApp(__name__, specification_dir='')
-app.add_api("farming_api.yml", strict_validation=True, validate_responses=True)
+app.add_api("farming_api.yml", base_path="/receiver", strict_validation=True, validate_responses=True)
 
 
 # Press the green button in the gutter to run the script.

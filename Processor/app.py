@@ -136,9 +136,10 @@ def init_scheduler():
 
 
 app = connexion.FlaskApp(__name__, specification_dir='')
-CORS(app.app)
-app.app.config['CORS_HEADERS'] = 'Content-Type'
-app.add_api("farming_api.yml", strict_validation=True, validate_responses=True)
+if "TARGET_ENV" not in os.environ or os.environ["TARGET_ENV"] != "test":
+    CORS(app.app)
+    app.app.config['CORS_HEADERS'] = 'Content-Type'
+app.add_api("farming_api.yml", base_path="/processor", strict_validation=True, validate_responses=True)
 
 if __name__ == "__main__":
     init_scheduler()
