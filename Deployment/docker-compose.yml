@@ -51,7 +51,7 @@ services:
   receiver:
     image: receiver
     ports:
-      - "8080:8080"
+      - "8080"
     networks:
       - "api.network"
     environment:
@@ -64,7 +64,7 @@ services:
   storage:
     image: storage
     ports:
-      - "8090:8090"
+      - "8090"
     networks:
       - "api.network"
     environment:
@@ -93,7 +93,7 @@ services:
     networks:
       - "api.network"
     ports:
-      - "8110:8110"
+      - "8110"
     environment:
       - TARGET_ENV=test
     volumes:
@@ -106,7 +106,7 @@ services:
     networks:
       - "api.network"
     ports:
-      - "3000:3000"
+      - "3000"
     depends_on:
       - "processor"
       - "audit"
