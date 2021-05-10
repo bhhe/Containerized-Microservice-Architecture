@@ -1,3 +1,3 @@
-# Farming-API_MSA
+# Farming-Data-Statistics API
 
-Farming API MSA
+Developed with containerized microservice architecture
