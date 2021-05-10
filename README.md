@@ -1,3 +1,3 @@
-# Farming-Data-Statistics API
+# Farm Data Statistics API
 
 Developed with containerized microservice architecture
